@@ -265,6 +265,16 @@ Stratum 表示 NTP 時間來源的層級；多伺服器冗餘可以降低單一�
 ### 3-3-2 從 `tracking` 判斷是否同步（stratum、offset 概念）
 <img width="825" height="506" alt="image" src="https://github.com/user-attachments/assets/75248027-b2a6-4c35-8e3b-db9e72a18980" />
 
+| 檢查項目 | 實際結果 | 判讀 |
+|---|---|---|
+| 時間來源 | 192.168.146.100 | 確實指向 sle15-b |
+| 來源狀態 | ^* | 已選定 sle15-b 作為同步來源 |
+| 來源 Stratum | 3 | sle15-b 的同步層級 |
+| Client Stratum | 4 | sle15-a 比 Server 低一個同步層級 |
+| Reach | 17（八進位） | 最近四次輪詢成功，尚未累積到完整八次 |
+| System time | 0.000000088 秒 | 約快 0.088 微秒 |
+| Leap status | Normal | 目前時間同步狀態正常 |
+
 ### 3-3-3 說明 VM 環境為何更應使用 Chrony，並確認可達上游或內網 NTP
 虛擬機的系統時間可能受到宿主機負載、CPU 排程、暫停及恢復等因素影響，產生時間偏移。Chrony 能持續估計系統時鐘的偏移與頻率誤差，並在網路不穩定或 VM 恢復運作後重新建立時間同步。
 在本次實驗中，sle15-b 作為內網 NTP Server，先與外部 NTP 同步，再提供時間給 sle15-a。這能讓兩台 VM 使用一致的時間來源，有助於日誌分析、身分驗證及後續叢集服務。
