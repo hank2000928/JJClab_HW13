@@ -62,3 +62,15 @@ isolate 可能停止目前 Target 不需要的服務。如果透過 SSH 操作�
 |service sshd stop|sudo systemctl stop sshd|
 |/etc/init.d/sshd restart|sudo systemctl restart sshd|
 
+## 1-2. 生命週期指令
+|指令	|功能	|改變開機自啟？|
+|---|---|---|
+|start	|啟動服務	|否|
+|stop	|停止服務|	否|
+|restart	|停止後重新啟動|	否|
+|reload	|要求服務重新讀取設定（須支援）|	否|
+|enable	|設定開機自動啟動|	是|
+|disable|	取消開機自動啟動|	是|
+|enable --now|	設定開機自啟並立即啟動|	是|
+|is-active	|查詢服務是否執行	|否|
+|is-enabled|	查詢是否設定開機自啟|	否|
