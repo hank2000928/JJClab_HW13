@@ -203,3 +203,10 @@ isolate 可能停止目前 Target 不需要的服務。如果透過 SSH 操作�
 ### 2-4-4 | 改非標準埠為什麼只是「模糊安全」，不能取代金鑰與權限控管？
 SSH 的預設 Port 是 TCP 22。將它改成 2222，可能減少一些只針對 Port 22 的自動化登入嘗試，但不代表 SSH 就變得隱蔽，攻擊者仍可透過連接埠掃描找出提供 SSH 的新 Port。
 故修改 SSH Port 主要能減少部分針對預設埠的自動化探測與攻擊流量，並不能真正隱藏 SSH 服務，也無法取代加密驗證、金鑰管理、使用者權限限制及防火牆管制。
+
+
+<img width="849" height="396" alt="image" src="https://github.com/user-attachments/assets/e63d03ec-4879-47ed-99fd-050a9141ec60" />
+
+<img width="839" height="752" alt="image" src="https://github.com/user-attachments/assets/ab6e4526-3b4d-4b71-ab5a-3f8d9e1c04bf" />
+
+<img width="843" height="275" alt="image" src="https://github.com/user-attachments/assets/0ffa1be6-5418-4616-9523-8d2a47592c3d" />
