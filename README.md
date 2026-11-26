@@ -300,3 +300,21 @@ Stratum 表示 NTP 時間來源的層級；多伺服器冗餘可以降低單一�
 其中 none 代表允許，deny 代表拒絕；規則會依順序比對。  
 第一行允許本機，第二行允許 VMware NAT 網段，第三行拒絕其他 IPv4 來源。  
 不過，ypserv.conf 的這種規則主要針對 IPv4，還需要搭配 /var/yp/securenets 與防火牆，不能單靠它保護 NIS。  
+## 4-2. Server 架設
+### 4-2-1 設定 NIS domain（寫入 `defaultdomain`），初始化 master 資料庫 
+<img width="857" height="132" alt="image" src="https://github.com/user-attachments/assets/bd819998-3c91-4020-b930-b03fbd3a1640" />
+### 4-2-2 寫出 `ypserv.conf` 允許本機 + `192.168.1.0/24`、其餘 deny 
+127.0.0.0/255.0.0.0:*:*:none: 允許本機 IPv4 Loopback 網段存取。  
+192.168.146.0/255.255.255.0:*:*:none: 允許你的 VMware NAT 內網存取。  
+*:*:*:deny: 拒絕其他未符合前面規則的 IPv4 來源。  
+<img width="859" height="758" alt="image" src="https://github.com/user-attachments/assets/a624bb97-858c-45bb-ad9d-fde6ea4f9cfc" />
+<img width="863" height="633" alt="image" src="https://github.com/user-attachments/assets/e1a27a85-5458-4f7e-9467-438d49793359" />
+
+<img width="860" height="504" alt="image" src="https://github.com/user-attachments/assets/66843592-38e3-4ba4-a240-7763e577d06f" />
+### 4-2-3 在 Server 建一個測試帳號後執行 `ypmake`，說明為何要重建
+ypmake／make 的用途：當來源帳號資料變更時，重新產生供 NIS Client 查詢的資料庫。
+<img width="863" height="343" alt="image" src="https://github.com/user-attachments/assets/aae86a3d-c5ef-4b0c-b665-64785aba5ff2" />
+<img width="860" height="782" alt="image" src="https://github.com/user-attachments/assets/b8f3bf21-7078-4d82-9943-b429f71c0e1b" />
+<img width="863" height="631" alt="image" src="https://github.com/user-attachments/assets/abd8f5f9-d86d-4a56-9cce-81597985e3bc" />
+
+
