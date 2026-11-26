@@ -142,13 +142,16 @@ isolate 可能停止目前 Target 不需要的服務。如果透過 SSH 操作�
 <img width="831" height="267" alt="image" src="https://github.com/user-attachments/assets/6f245e0a-bb0f-4889-855a-aceb43d77419" />
 ### 2-3-2 | （建議）Client 產生金鑰並把公鑰放到 Server 的 `authorized_keys`
 <img width="840" height="611" alt="image" src="https://github.com/user-attachments/assets/4554bf43-fc0e-409d-88bc-a049a5b5b7b3" />
+
 | 參數 | 意義 |
 |---|---|
 | -t rsa | 使用 RSA 金鑰 |
 | -b 4096 | 金鑰長度為 4096 bits |
 | -f | 指定儲存檔名 |
+
 <img width="831" height="125" alt="image" src="https://github.com/user-attachments/assets/b711e1b2-6ab7-44b2-867b-bc4983535517" />
 ## 2-4. `sshd_config` 強化（實驗機；先確認金鑰可登入）
+
 | 參數 | 用途 | 設定示例 |
 |---|---|---|
 | Port | SSH 監聽的 TCP 埠 | 22 |
@@ -162,6 +165,7 @@ isolate 可能停止目前 Target 不需要的服務。如果透過 SSH 操作�
 | AllowUsers / AllowGroups | 限制允許登入的使用者或群組 | JJCadmin |
 | LoginGraceTime | 登入驗證完成前允許的時間 | 60s |
 ### 2-4-1 寫出禁止 root 密碼直登、改用金鑰的建議參數組合
+
 |參數|設定|
 |---|---|
 |Port |22|
