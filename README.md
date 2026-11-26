@@ -132,7 +132,9 @@ isolate 可能停止目前 Target 不需要的服務。如果透過 SSH 操作�
 <img width="839" height="608" alt="image" src="https://github.com/user-attachments/assets/4d069ae3-83ad-4be7-b803-1dade8f62d4a" />
 ### 2-2-2 防火牆永久放行 `ssh` 並 reload，記錄 `list-services` 
 <img width="842" height="289" alt="image" src="https://github.com/user-attachments/assets/693e2bb7-d73e-4e2a-bb62-21c0ab2cb47b" />
+
 ### 2-2-3 | 說明為何改 `sshd_config` 前要備份，且改完要 `sshd -t` 再 `reload`
+
 必須先備份，因為一旦錯誤修改 SSH 的登入方式、網路位址或連接埠，可能導致無法再從遠端登入。保留原始設定可以協助復原。
 修改完成後，應先執行："sudo /usr/sbin/sshd -t"，其中-t 表示測試 SSH Server 設定檔的基本有效性，包括設定語法與部分必要條件。
 確認檢查通過後，再執行 systemctl reload sshd，讓 SSH Server 重新讀取設定。相較於 restart，reload 通常可以降低對既有連線的影響。
