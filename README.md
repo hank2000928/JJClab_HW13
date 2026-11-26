@@ -33,3 +33,12 @@
 |服務設定	|Shell 腳本	|Job 設定檔	|Unit 檔案|
 |適用情境	|傳統 Linux	|過渡時期的部分發行版|	現代主流 Linux|
 
+### 1-1-2 SysV **runlevel 3**／**5** 分別對應哪個 systemd **target**？
+### 1-1-3 runlevel 0／1／6 常見對應哪些 target？        
+|SysV Runlevel|	systemd Target|	用途|
+|---|---|---|
+|0|	poweroff.target	|關機|
+|1|	rescue.target	|救援／單使用者模式|
+|3|	multi-user.target	|多使用者文字模式|
+|5|	graphical.target	|圖形介面模式|
+|6|	reboot.target	|重新開機|
