@@ -303,7 +303,9 @@ Stratum 表示 NTP 時間來源的層級；多伺服器冗餘可以降低單一�
 ## 4-2. Server 架設
 ### 4-2-1 設定 NIS domain（寫入 `defaultdomain`），初始化 master 資料庫 
 <img width="857" height="132" alt="image" src="https://github.com/user-attachments/assets/bd819998-3c91-4020-b930-b03fbd3a1640" />
-### 4-2-2 寫出 `ypserv.conf` 允許本機 + `192.168.1.0/24`、其餘 deny 
+
+### 4-2-2 寫出 `ypserv.conf` 允許本機 + `192.168.1.0/24`、其餘 deny   
+
 127.0.0.0/255.0.0.0:*:*:none: 允許本機 IPv4 Loopback 網段存取。  
 192.168.146.0/255.255.255.0:*:*:none: 允許你的 VMware NAT 內網存取。  
 *:*:*:deny: 拒絕其他未符合前面規則的 IPv4 來源。  
@@ -311,10 +313,18 @@ Stratum 表示 NTP 時間來源的層級；多伺服器冗餘可以降低單一�
 <img width="863" height="633" alt="image" src="https://github.com/user-attachments/assets/e1a27a85-5458-4f7e-9467-438d49793359" />
 
 <img width="860" height="504" alt="image" src="https://github.com/user-attachments/assets/66843592-38e3-4ba4-a240-7763e577d06f" />
-### 4-2-3 在 Server 建一個測試帳號後執行 `ypmake`，說明為何要重建
+
+### 4-2-3 在 Server 建一個測試帳號後執行 `ypmake`，說明為何要重建  
+
 ypmake／make 的用途：當來源帳號資料變更時，重新產生供 NIS Client 查詢的資料庫。
 <img width="863" height="343" alt="image" src="https://github.com/user-attachments/assets/aae86a3d-c5ef-4b0c-b665-64785aba5ff2" />
 <img width="860" height="782" alt="image" src="https://github.com/user-attachments/assets/b8f3bf21-7078-4d82-9943-b429f71c0e1b" />
 <img width="863" height="631" alt="image" src="https://github.com/user-attachments/assets/abd8f5f9-d86d-4a56-9cce-81597985e3bc" />
 
+### 4-2-4 `ypserv` 與 `rpcbind` 皆為 `active`   
+
+<img width="862" height="611" alt="image" src="https://github.com/user-attachments/assets/44063e76-7ad9-4621-b76f-ca9713f73554" />
+<img width="841" height="185" alt="image" src="https://github.com/user-attachments/assets/7725310c-5bf8-428e-8fc6-61dd73a6da8b" />
+<img width="868" height="671" alt="image" src="https://github.com/user-attachments/assets/2c95b970-eae8-462a-9581-e677a8b9acb0" />
+<img width="866" height="698" alt="image" src="https://github.com/user-attachments/assets/da98fb3b-88bc-4cd8-8491-75dab8e01e8f" />
 
