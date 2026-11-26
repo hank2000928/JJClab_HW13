@@ -112,3 +112,19 @@ isolate 可能停止目前 Target 不需要的服務。如果透過 SSH 操作�
 <img width="838" height="393" alt="image" src="https://github.com/user-attachments/assets/10d929a2-8e0b-48ea-a65d-ef3bf6352f4b" />
 
 # 練習 2. SSH：Client／Server 架設
+## 2-1. 協定演進
+### 2-1-1 比較 `rsh`／`rlogin`、`Telnet`、`SSH` 在「傳輸是否加密」上的差異
+| 協定 | 傳輸加密 | 用途 | 安全性 |
+|---|---|---|---|
+| rlogin | 無 | 遠端登入 | 不安全 |
+| rsh | 無 | 遠端執行指令 | 不安全 |
+| Telnet | 無 | 遠端互動式終端機 | 不安全 |
+| SSH | 有 | 安全遠端登入、執行指令及傳檔 | 較安全 |
+### 2-1-2 | SSH 的加密、多種驗證、完整性保護、擴充（SFTP／埠轉發）各代表什麼？ 
+1. 加密（Encryption）: 加密保護 Client 與 Server 傳輸的資料，降低被旁觀者直接讀取的風險。
+2. 多種驗證（Authentication）: SSH 支援多種登入驗證方式，例如密碼與公鑰驗證。
+3. 完整性保護（Integrity）: SSH 透過加密協定中的完整性驗證機制，讓通訊雙方能偵測傳輸資料是否遭到未授權修改。
+4. 擴充功能（Extensions）: SSH 不只能遠端登入，還支援 SFTP、SCP 與 Port Forwarding（埠轉發）等功能。
+### 2-1-3 為什麼明文協定不該再用於管理面？  
+因為 rlogin、rsh 與 Telnet 缺乏傳輸加密，攻擊者若能截取網路封包，可能讀取登入憑證及操作內容。SSH 提供加密、使用者與伺服器身分驗證，以及資料完整性保護，因此現代 Linux 遠端管理應優先使用 SSH。
+## 2-2. Server 架設
