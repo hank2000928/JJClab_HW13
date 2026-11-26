@@ -81,3 +81,34 @@ isolate 可能停止目前 Target 不需要的服務。如果透過 SSH 操作�
 | 1-2-2 | 改 unit 檔後為什麼要 `daemon-reload`？忘記做會看到什麼現象？         | 修改 Unit 檔案後，需要執行 daemon-reload，讓 systemd 重新載入設定。若忘記執行，systemd 可能繼續使用舊的 Unit 定義，甚至提示設定檔已在磁碟上變更。     |
 | 1-2-3 | 寫出「立即啟動 + 開機啟用 + 看日誌」的指令序列                       |systemctl enable --now sshd; systemctl status sshd; journalctl -u sshd -n 30 --no-pager|
 | 1-2-4 | 日誌為何優先 `journalctl -u <svc>`，再查服務自己的 log 檔？          |journalctl 能協助判斷服務是否成功啟動，以及 systemd 是否有相關錯誤。若需要進一步分析服務內部行為，再查看該程式自己的日誌。|
+
+<img width="839" height="278" alt="image" src="https://github.com/user-attachments/assets/a75c8718-82d7-4e30-9995-c791ab98f16a" />
+
+## 1-3 自訂 unit（單機「服務端」部署）
+### 1-3-1 寫出完整 `myapp.service`（含 `After`、`ExecStart`、`WantedBy`）
+<img width="837" height="185" alt="image" src="https://github.com/user-attachments/assets/17f06384-b24e-4ad4-99ea-bf122923fba3" />
+程式概念: 建立無限迴圈。只要程式沒有被停止，就會持續執行。輸出目前日期、時間，以及 myapp running。等待五秒，再回到迴圈開頭。
+開始賦予執行權限等後續操作:  
+
+<img width="838" height="707" alt="image" src="https://github.com/user-attachments/assets/daf06bfa-cf38-46a5-bc32-0519d4835d00" />
+|區段／參數|	功能|
+|---|---|
+|[Unit]	|定義服務基本資訊及相依關係|
+|Description=	|服務的文字說明|
+|After=network.target	|啟動順序安排在 network.target 之後|
+|[Service]	|定義程序如何執行|
+|Type=simple|	systemd 直接管理前景執行的主程序|
+|User=JJCadmin	|使用一般帳號執行程式|
+|ExecStart=	|指定要執行的程式|
+|Restart=on-failure	|程序異常失敗時自動重新啟動|
+|[Install]	|定義 Unit 的啟用方式|
+|WantedBy=multi-user.target|	設定 enable 時與 multi-user.target 建立啟用關係|
+### 1-3-2 執行 `daemon-reload` → `enable --now` → `status` → `journalctl -u myapp`
+
+<img width="837" height="684" alt="image" src="https://github.com/user-attachments/assets/b3cb3a98-9f4b-4833-bdd3-613f57a50cea" />
+### 1-3-3 說明為何修改套件原廠 unit 時優先用 drop-in，而不是直接改 `/usr/lib/...` 
+/usr/lib/systemd/system/ 主要存放套件提供的原廠 Unit，直接修改可能在套件更新時被覆蓋。使用 drop-in 可以將自訂設定保存在 /etc/systemd/system/，避免直接修改原廠檔案，也方便後續維護與追蹤設定變更。
+### 1-3-4 | 實驗結束後 `disable --now myapp`（可選刪檔）
+<img width="838" height="393" alt="image" src="https://github.com/user-attachments/assets/10d929a2-8e0b-48ea-a65d-ef3bf6352f4b" />
+
+# 練習 2. SSH：Client／Server 架設
