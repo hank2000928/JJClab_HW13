@@ -42,7 +42,9 @@
 |3|	multi-user.target	|多使用者文字模式|
 |5|	graphical.target	|圖形介面模式|
 |6|	reboot.target	|重新開機|
-<img width="839" height="112" alt="image" src="https://github.com/user-attachments/assets/ff8e15c1-123b-483d-90ac-d6461b19a438" />
+### 1-1-4 查目前預設 target、改為 `multi-user.target` 的指令各是什麼？  
+<img width="841" height="164" alt="image" src="https://github.com/user-attachments/assets/7bdc90ef-8ccf-4863-966d-5618daf3437f" />
+系統知道指令的位置，但一般使用者無法直接透過目前的 PATH 找到它，改用"sudo /usr/sbin/runlevel"
 
 ### 1-1-5 想在命令列切到文字多使用者模式，應使用哪道指令？`isolate` 有何風險？ 
 |指令	|功能	|是否立即切換|
@@ -52,3 +54,11 @@
 |systemctl isolate multi-user.target	|立即切換到指定 Target|	是|
 
 isolate 可能停止目前 Target 不需要的服務。如果透過 SSH 操作，可能影響連線。
+
+### 1-1-6 舊文件寫 `service foo start` 或 `/etc/init.d/foo`，在 SLES 15 多半對應什麼？
+|舊版|SLE15|
+|---|---|
+|service sshd start|sudo systemctl start sshd|
+|service sshd stop|sudo systemctl stop sshd|
+|/etc/init.d/sshd restart|sudo systemctl restart sshd|
+
