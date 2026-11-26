@@ -150,6 +150,7 @@ isolate 可能停止目前 Target 不需要的服務。如果透過 SSH 操作�
 | -f | 指定儲存檔名 |
 
 <img width="831" height="125" alt="image" src="https://github.com/user-attachments/assets/b711e1b2-6ab7-44b2-867b-bc4983535517" />
+
 ## 2-4. `sshd_config` 強化（實驗機；先確認金鑰可登入）
 
 | 參數 | 用途 | 設定示例 |
