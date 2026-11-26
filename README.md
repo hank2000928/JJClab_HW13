@@ -24,7 +24,7 @@
 
 # 練習 1. systemd：服務與開機管理
 ## 1-1. 演進與 runlevel／target
-### 1-1-1  以表格對照 **SysVinit**、**Upstart**、**systemd** 至少三項差異 
+### 1-1-1 以表格對照 **SysVinit**、**Upstart**、**systemd** 至少三項差異 
 |比較項目	|SysVinit|	Upstart|	systemd|
 |---|---|---|---|
 |啟動方式	|依腳本順序執行	|事件驅動	|相依關係與平行啟動|
@@ -42,3 +42,13 @@
 |3|	multi-user.target	|多使用者文字模式|
 |5|	graphical.target	|圖形介面模式|
 |6|	reboot.target	|重新開機|
+<img width="839" height="112" alt="image" src="https://github.com/user-attachments/assets/ff8e15c1-123b-483d-90ac-d6461b19a438" />
+
+### 1-1-5 想在命令列切到文字多使用者模式，應使用哪道指令？`isolate` 有何風險？ 
+|指令	|功能	|是否立即切換|
+|---|---|---|
+|systemctl get-default	|查詢預設 Target	|否|
+|systemctl set-default multi-user.target	|修改下次開機的預設模式	|否|
+|systemctl isolate multi-user.target	|立即切換到指定 Target|	是|
+
+isolate 可能停止目前 Target 不需要的服務。如果透過 SSH 操作，可能影響連線。
