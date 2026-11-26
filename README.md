@@ -227,3 +227,24 @@ Stratum 表示 NTP 時間來源的層級；多伺服器冗餘可以降低單一�
 | 1.0 | 時間誤差超過 1 秒時，允許直接調整系統時間 |
 | 3 | 只在前 3 次時鐘更新中允許這種直接調整 |
 ### 3-1-4 `driftfile`、`rtcsync`、`allow`、`local stratum 10` 各做什麼？
+
+| 參數 | 用途 |
+|---|---|
+| driftfile | 保存系統時鐘的頻率偏差估計，供下次啟動參考 |
+| rtcsync | 允許透過核心機制定期將系統時間同步至硬體時鐘（RTC） |
+| allow | 指定哪些 Client 網段可以向本機取得 NTP 時間 |
+| local stratum 10 | 無法連接外部時間來源時，允許以本機時鐘作為備用參考 |
+
+### 3-1-5 | 用 `chronyc tracking` 如何判讀是否已同步？
+<img width="834" height="271" alt="image" src="https://github.com/user-attachments/assets/ea89cfbc-6258-46ab-8b61-934cae31a0a7" />
+| 欄位 | 意義 |
+|---|---|
+| Reference ID | 目前參考的時間來源 |
+| Stratum | 本機同步層級 |
+| System time | 目前系統時間相對於 Chrony 估計 NTP 時間的偏差 |
+| Last offset | 最近一次估計的時間偏差 |
+| RMS offset | 一段時間內偏差的均方根估計 |
+| Frequency | 系統時鐘的頻率校正量，單位 ppm |
+| Leap status | 同步及閏秒相關狀態；Normal 通常表示正常同步狀態 |
+
+## 3-2. Server 架設（對內網提供 NTP）
