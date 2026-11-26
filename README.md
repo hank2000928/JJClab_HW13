@@ -292,11 +292,11 @@ Stratum 表示 NTP 時間來源的層級；多伺服器冗餘可以降低單一�
 ### 4-1-2 設計一組只允許 `192.168.1.0/24` 的 `/etc/ypserv.conf` 規則（含最後 deny）
 示例規則如下：
 
-127.0.0.1:*:*:none
-192.168.146.0/255.255.255.0:*:*:none
-*:*:*:deny
+127.0.0.1:*:*:none  
+192.168.146.0/255.255.255.0:*:*:none  
+*:*:*:deny  
 
-規則的欄位依序是："host:domain:map:security"
-其中 none 代表允許，deny 代表拒絕；規則會依順序比對。
-第一行允許本機，第二行允許 VMware NAT 網段，第三行拒絕其他 IPv4 來源。
-不過，ypserv.conf 的這種規則主要針對 IPv4，還需要搭配 /var/yp/securenets 與防火牆，不能單靠它保護 NIS。
+規則的欄位依序是："host:domain:map:security"  
+其中 none 代表允許，deny 代表拒絕；規則會依順序比對。  
+第一行允許本機，第二行允許 VMware NAT 網段，第三行拒絕其他 IPv4 來源。  
+不過，ypserv.conf 的這種規則主要針對 IPv4，還需要搭配 /var/yp/securenets 與防火牆，不能單靠它保護 NIS。  
