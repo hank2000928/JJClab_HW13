@@ -248,3 +248,24 @@ Stratum 表示 NTP 時間來源的層級；多伺服器冗餘可以降低單一�
 | Leap status | 同步及閏秒相關狀態；Normal 通常表示正常同步狀態 |
 
 ## 3-2. Server 架設（對內網提供 NTP）
+<img width="839" height="488" alt="image" src="https://github.com/user-attachments/assets/a2bb840c-fb01-4d7f-990a-5c16528f9be8" />
+<img width="841" height="591" alt="image" src="https://github.com/user-attachments/assets/0e14f8fa-bfdd-4dfc-8572-fef2fee33774" />
+<img width="847" height="537" alt="image" src="https://github.com/user-attachments/assets/f4bc3517-1fad-4490-a8c4-67a2f50cd5d4" />
+<img width="839" height="539" alt="image" src="https://github.com/user-attachments/assets/433009ff-b19b-4dd2-9302-9511b4f8c311" />
+
+## 3-3. Client 架設與驗證
+### 3-3-1 Client 的時間源是否顯示為 Server IP？附 `chronyc sources` 
+<img width="822" height="415" alt="image" src="https://github.com/user-attachments/assets/44a49841-f1a6-4bd4-bbdc-02f0bf605527" />
+| 設定 | 意義 |
+|---|---|
+| server | 指定單一 NTP 時間伺服器 |
+| 192.168.146.100 | sle15-b 的 IP |
+| iburst | 初次建立同步時快速取得多次時間測量值 |
+
+### 3-3-2 從 `tracking` 判斷是否同步（stratum、offset 概念）
+<img width="825" height="506" alt="image" src="https://github.com/user-attachments/assets/75248027-b2a6-4c35-8e3b-db9e72a18980" />
+
+### 3-3-3 說明 VM 環境為何更應使用 Chrony，並確認可達上游或內網 NTP
+虛擬機的系統時間可能受到宿主機負載、CPU 排程、暫停及恢復等因素影響，產生時間偏移。Chrony 能持續估計系統時鐘的偏移與頻率誤差，並在網路不穩定或 VM 恢復運作後重新建立時間同步。
+在本次實驗中，sle15-b 作為內網 NTP Server，先與外部 NTP 同步，再提供時間給 sle15-a。這能讓兩台 VM 使用一致的時間來源，有助於日誌分析、身分驗證及後續叢集服務。
+
