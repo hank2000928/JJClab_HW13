@@ -128,3 +128,7 @@ isolate 可能停止目前 Target 不需要的服務。如果透過 SSH 操作�
 ### 2-1-3 為什麼明文協定不該再用於管理面？  
 因為 rlogin、rsh 與 Telnet 缺乏傳輸加密，攻擊者若能截取網路封包，可能讀取登入憑證及操作內容。SSH 提供加密、使用者與伺服器身分驗證，以及資料完整性保護，因此現代 Linux 遠端管理應優先使用 SSH。
 ## 2-2. Server 架設
+### 2-2-1 安裝並使 `sshd` 開機啟用且立即 `active` 
+<img width="839" height="608" alt="image" src="https://github.com/user-attachments/assets/4d069ae3-83ad-4be7-b803-1dade8f62d4a" />
+### 2-2-2 防火牆永久放行 `ssh` 並 reload，記錄 `list-services` 
+
