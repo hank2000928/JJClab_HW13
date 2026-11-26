@@ -137,4 +137,50 @@ isolate 可能停止目前 Target 不需要的服務。如果透過 SSH 操作�
 修改完成後，應先執行："sudo /usr/sbin/sshd -t"，其中-t 表示測試 SSH Server 設定檔的基本有效性，包括設定語法與部分必要條件。
 確認檢查通過後，再執行 systemctl reload sshd，讓 SSH Server 重新讀取設定。相較於 restart，reload 通常可以降低對既有連線的影響。
 ## 2-3. Client 連線驗證
+### 2-3-1 | 從 Client 以密碼（或既有金鑰）登入 Server，記錄指令與成功證明 
 
+<img width="831" height="267" alt="image" src="https://github.com/user-attachments/assets/6f245e0a-bb0f-4889-855a-aceb43d77419" />
+### 2-3-2 | （建議）Client 產生金鑰並把公鑰放到 Server 的 `authorized_keys`
+<img width="840" height="611" alt="image" src="https://github.com/user-attachments/assets/4554bf43-fc0e-409d-88bc-a049a5b5b7b3" />
+| 參數 | 意義 |
+|---|---|
+| -t rsa | 使用 RSA 金鑰 |
+| -b 4096 | 金鑰長度為 4096 bits |
+| -f | 指定儲存檔名 |
+<img width="831" height="125" alt="image" src="https://github.com/user-attachments/assets/b711e1b2-6ab7-44b2-867b-bc4983535517" />
+## 2-4. `sshd_config` 強化（實驗機；先確認金鑰可登入）
+| 參數 | 用途 | 設定示例 |
+|---|---|---|
+| Port | SSH 監聽的 TCP 埠 | 22 |
+| ListenAddress | 指定 SSH 監聽的本機 IP | 192.168.146.100 |
+| PermitRootLogin | 控制 root 是否允許透過 SSH 登入 | no |
+| PasswordAuthentication | 允許或禁止密碼驗證 | no |
+| PubkeyAuthentication | 允許或禁止公鑰驗證 | yes |
+| PermitEmptyPasswords | 是否允許空密碼帳號登入 | no |
+| X11Forwarding | 是否允許轉送遠端圖形程式 | no |
+| MaxAuthTries | 單次 SSH 連線允許的驗證嘗試次數 | 3 |
+| AllowUsers / AllowGroups | 限制允許登入的使用者或群組 | JJCadmin |
+| LoginGraceTime | 登入驗證完成前允許的時間 | 60s |
+### 2-4-1 寫出禁止 root 密碼直登、改用金鑰的建議參數組合
+|參數|設定|
+|---|---|
+|Port |22|
+|PermitRootLogin| no|
+|PubkeyAuthentication| yes|
+|PasswordAuthentication| no|
+|KbdInteractiveAuthentication |no|
+|PermitEmptyPasswords |no|
+|X11Forwarding |no|
+|MaxAuthTries| 3|
+|LoginGraceTime |60|
+|AllowUsers |JJCadmin|
+### 2-4-2 關閉密碼前必須先確認什麼？為什麼要留備援 session？
+假設把 Server 設定成：PasswordAuthentication no
+但 Client 的公鑰沒有正確設定，重新連線時就可能出現：Permission denied (publickey).
+此時如果已經關閉原本的 SSH 視窗，就可能失去遠端登入能力。
+因此正確的操作方式是：
+1. 確認 sle15-a 使用公鑰可以登入 sle15-b
+2. 保留一個已登入 sle15-b 的 SSH Session，並確保 VMware 本機主控台可使用
+3. 備份原本的 sshd_config
+4. 修改設定，執行 sshd -t 與有效設定檢查
+5. 執行 systemctl reload sshd，從另一個新視窗再次測試登入
