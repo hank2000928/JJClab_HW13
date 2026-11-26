@@ -74,3 +74,10 @@ isolate 可能停止目前 Target 不需要的服務。如果透過 SSH 操作�
 |enable --now|	設定開機自啟並立即啟動|	是|
 |is-active	|查詢服務是否執行	|否|
 |is-enabled|	查詢是否設定開機自啟|	否|
+
+| 小題  | 問題                                                                 | 作答 |
+| ----- | -------------------------------------------------------------------- | ---- |
+| 1-2-1 | `list-units` 與 `list-unit-files` 差別？                             | list-units 主要查看 systemd 已載入的 Unit 及目前運作狀態；list-unit-files 主要查看 Unit 檔案與是否已設定開機自動啟動。     |
+| 1-2-2 | 改 unit 檔後為什麼要 `daemon-reload`？忘記做會看到什麼現象？         | 修改 Unit 檔案後，需要執行 daemon-reload，讓 systemd 重新載入設定。若忘記執行，systemd 可能繼續使用舊的 Unit 定義，甚至提示設定檔已在磁碟上變更。     |
+| 1-2-3 | 寫出「立即啟動 + 開機啟用 + 看日誌」的指令序列                       |systemctl enable --now sshd; systemctl status sshd; journalctl -u sshd -n 30 --no-pager|
+| 1-2-4 | 日誌為何優先 `journalctl -u <svc>`，再查服務自己的 log 檔？          |journalctl 能協助判斷服務是否成功啟動，以及 systemd 是否有相關錯誤。若需要進一步分析服務內部行為，再查看該程式自己的日誌。|
