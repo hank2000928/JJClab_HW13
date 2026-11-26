@@ -204,9 +204,26 @@ isolate 可能停止目前 Target 不需要的服務。如果透過 SSH 操作�
 SSH 的預設 Port 是 TCP 22。將它改成 2222，可能減少一些只針對 Port 22 的自動化登入嘗試，但不代表 SSH 就變得隱蔽，攻擊者仍可透過連接埠掃描找出提供 SSH 的新 Port。
 故修改 SSH Port 主要能減少部分針對預設埠的自動化探測與攻擊流量，並不能真正隱藏 SSH 服務，也無法取代加密驗證、金鑰管理、使用者權限限制及防火牆管制。
 
-
 <img width="849" height="396" alt="image" src="https://github.com/user-attachments/assets/e63d03ec-4879-47ed-99fd-050a9141ec60" />
-
 <img width="839" height="752" alt="image" src="https://github.com/user-attachments/assets/ab6e4526-3b4d-4b71-ab5a-3f8d9e1c04bf" />
-
 <img width="843" height="275" alt="image" src="https://github.com/user-attachments/assets/0ffa1be6-5418-4616-9523-8d2a47592c3d" />
+
+# 練習 3. Chrony：內網時間 Server／Client 架設
+## 3-1. 概念
+### 3-1-1 比較 NTP、SNTP、Chrony 的適用情境（含 VM／不穩網路）
+
+| 項目 | 本質 | 適用情境 |
+|---|---|---|
+| NTP | 網路時間同步協定 | 伺服器、工作站、叢集 |
+| SNTP | 簡化的 NTP 同步機制 | 較簡單的裝置或時間同步用途 |
+| Chrony | NTP 的軟體實作 | Linux、VM、網路不穩定的環境 |
+
+###  3-1-2 Stratum 分層與「多伺服器冗餘」在防什麼？ 
+Stratum 表示 NTP 時間來源的層級；多伺服器冗餘可以降低單一來源故障的影響，並協助辨識異常時間來源。Stratum 表示同步層級，從最精準的0號開始，但不代表 Stratum 數字越小，實際時間誤差就一定越低。
+### 3-1-3 `iburst` 與 `makestep 1.0 3` 各自解決什麼問題？
+
+| 數值 | 意義 |
+|---|---|
+| 1.0 | 時間誤差超過 1 秒時，允許直接調整系統時間 |
+| 3 | 只在前 3 次時鐘更新中允許這種直接調整 |
+### 3-1-4 `driftfile`、`rtcsync`、`allow`、`local stratum 10` 各做什麼？
